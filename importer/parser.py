@@ -8,6 +8,16 @@ from xml.etree import ElementTree as ET
 from .models import Experience, Profile, Resume, Skill
 
 
+def parse_year_month(date_str: str) -> date:
+    """Parse YYYY-MM format to date (defaults to 1st of month)."""
+    if not date_str:
+        raise ValueError("Empty date string")
+    # Handle both YYYY-MM and YYYY-MM-DD formats
+    if len(date_str) == 7:  # YYYY-MM
+        return date.fromisoformat(f"{date_str}-01")
+    return date.fromisoformat(date_str)
+
+
 def parse_resume_xml(path: Path) -> Resume:
     """Parse resume.xml into typed dataclasses."""
     tree = ET.parse(path)
@@ -42,8 +52,8 @@ def parse_resume_xml(path: Path) -> Resume:
         experiences.append(Experience(
             company=exp.findtext('company', ''),
             title=exp.findtext('title', ''),
-            start_date=date.fromisoformat(exp.findtext('startDate', '')),
-            end_date=date.fromisoformat(end_date_str) if end_date_str else None,
+            start_date=parse_year_month(exp.findtext('startDate', '')),
+            end_date=parse_year_month(end_date_str) if end_date_str else None,
             summary=exp.findtext('description/summary'),
             accomplishments=[
                 a.text or ''

@@ -24,21 +24,23 @@ def generate_pdf(resume: Resume) -> BytesIO:
     )
     styles = getSampleStyleSheet()
 
-    # Custom styles
+    # Custom styles (prefixed to avoid conflicts with default stylesheet)
     styles.add(ParagraphStyle(
-        'Name',
+        'ResumeName',
         fontSize=24,
-        spaceAfter=6,
+        leading=28,
+        spaceAfter=4,
         textColor=colors.HexColor('#1a1a2e')
     ))
     styles.add(ParagraphStyle(
-        'Title',
+        'ResumeSubtitle',
         fontSize=14,
-        spaceAfter=12,
+        leading=18,
+        spaceAfter=8,
         textColor=colors.HexColor('#4a4a6a')
     ))
     styles.add(ParagraphStyle(
-        'SectionHeader',
+        'ResumeSection',
         fontSize=12,
         spaceBefore=16,
         spaceAfter=8,
@@ -46,14 +48,14 @@ def generate_pdf(resume: Resume) -> BytesIO:
         fontName='Helvetica-Bold'
     ))
     styles.add(ParagraphStyle(
-        'JobTitle',
+        'ResumeJob',
         fontSize=11,
         spaceBefore=8,
         spaceAfter=4,
         textColor=colors.HexColor('#1a1a2e'),
     ))
     styles.add(ParagraphStyle(
-        'Bullet',
+        'ResumeBullet',
         fontSize=10,
         leftIndent=20,
         spaceAfter=2,
@@ -62,8 +64,8 @@ def generate_pdf(resume: Resume) -> BytesIO:
     story = []
 
     # Header
-    story.append(Paragraph(resume.profile.name, styles['Name']))
-    story.append(Paragraph(resume.profile.title, styles['Title']))
+    story.append(Paragraph(resume.profile.name, styles['ResumeName']))
+    story.append(Paragraph(resume.profile.title, styles['ResumeSubtitle']))
 
     # Contact line
     contact_parts = [resume.profile.email]
@@ -88,17 +90,17 @@ def generate_pdf(resume: Resume) -> BytesIO:
 
     # Summary
     if resume.profile.summary:
-        story.append(Paragraph("Summary", styles['SectionHeader']))
+        story.append(Paragraph("Summary", styles['ResumeSection']))
         story.append(Paragraph(resume.profile.summary.strip(), styles['Normal']))
 
     # Experience
-    story.append(Paragraph("Experience", styles['SectionHeader']))
+    story.append(Paragraph("Experience", styles['ResumeSection']))
     for exp in resume.experiences:
         end = exp.end_date.strftime('%b %Y') if exp.end_date else 'Present'
         start = exp.start_date.strftime('%b %Y')
         story.append(Paragraph(
             f"<b>{exp.title}</b> at {exp.company}",
-            styles['JobTitle']
+            styles['ResumeJob']
         ))
         story.append(Paragraph(
             f"<i>{start} - {end}</i>",
@@ -107,11 +109,11 @@ def generate_pdf(resume: Resume) -> BytesIO:
         if exp.summary:
             story.append(Paragraph(exp.summary, styles['Normal']))
         for accomplishment in exp.accomplishments:
-            story.append(Paragraph(f"* {accomplishment}", styles['Bullet']))
+            story.append(Paragraph(f"* {accomplishment}", styles['ResumeBullet']))
         story.append(Spacer(1, 8))
 
     # Skills
-    story.append(Paragraph("Skills", styles['SectionHeader']))
+    story.append(Paragraph("Skills", styles['ResumeSection']))
     by_category: dict[str, list[str]] = {}
     for skill in resume.skills:
         by_category.setdefault(skill.category, []).append(skill.name)
