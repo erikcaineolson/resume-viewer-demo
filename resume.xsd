@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Root element -->
+  <xs:element name="resume">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="profile" type="profileType"/>
+        <xs:element name="experiences" type="experiencesType"/>
+        <xs:element name="skills" type="skillsType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Profile/Contact information -->
+  <xs:complexType name="profileType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="email" type="xs:string"/>
+      <xs:element name="phone" type="xs:string" minOccurs="0"/>
+      <xs:element name="location" type="xs:string" minOccurs="0"/>
+      <xs:element name="summary" type="xs:string" minOccurs="0"/>
+      <xs:element name="links" type="linksType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Social/professional links -->
+  <xs:complexType name="linksType">
+    <xs:sequence>
+      <xs:element name="link" type="linkType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Single link with type attribute -->
+  <xs:complexType name="linkType">
+    <xs:simpleContent>
+      <xs:extension base="xs:anyURI">
+        <xs:attribute name="type" type="linkTypeEnum" use="required"/>
+        <xs:attribute name="label" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Link type enumeration -->
+  <xs:simpleType name="linkTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="linkedin"/>
+      <xs:enumeration value="github"/>
+      <xs:enumeration value="website"/>
+      <xs:enumeration value="twitter"/>
+      <xs:enumeration value="portfolio"/>
+      <xs:enumeration value="other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Experiences container -->
+  <xs:complexType name="experiencesType">
+    <xs:sequence>
+      <xs:element name="experience" type="experienceType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Single experience -->
+  <xs:complexType name="experienceType">
+    <xs:sequence>
+      <xs:element name="company" type="xs:string"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="startDate" type="xs:gYearMonth"/>
+      <xs:element name="endDate" type="xs:gYearMonth" minOccurs="0"/>
+      <xs:element name="description" type="descriptionType"/>
+      <xs:element name="skills" type="experienceSkillsType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Description with summary and accomplishment bullet points -->
+  <xs:complexType name="descriptionType">
+    <xs:sequence>
+      <xs:element name="summary" type="xs:string" minOccurs="0"/>
+      <xs:element name="accomplishment" type="xs:string" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Skills referenced in an experience -->
+  <xs:complexType name="experienceSkillsType">
+    <xs:sequence>
+      <xs:element name="skill" type="xs:string" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Skills container (master list) -->
+  <xs:complexType name="skillsType">
+    <xs:sequence>
+      <xs:element name="skill" type="skillType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Single skill with attributes -->
+  <xs:complexType name="skillType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="category" type="skillCategoryType" use="required"/>
+        <xs:attribute name="proficiency" type="proficiencyType" default="3"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Skill category enumeration -->
+  <xs:simpleType name="skillCategoryType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="language"/>
+      <xs:enumeration value="framework"/>
+      <xs:enumeration value="tool"/>
+      <xs:enumeration value="platform"/>
+      <xs:enumeration value="methodology"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Proficiency level (1-5) -->
+  <xs:simpleType name="proficiencyType">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="5"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

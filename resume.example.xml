@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resume xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="resume.xsd">
+
+  <profile>
+    <name>Your Name</name>
+    <title>Senior Software Engineer</title>
+    <email>you@example.com</email>
+    <phone>+1 (555) 123-4567</phone>
+    <location>City, State</location>
+    <summary>
+      Experienced software engineer with 10+ years building scalable web applications.
+      Passionate about clean code, developer experience, and mentoring teams.
+    </summary>
+    <links>
+      <link type="linkedin">https://linkedin.com/in/yourprofile</link>
+      <link type="github">https://github.com/yourusername</link>
+      <link type="website" label="Portfolio">https://yoursite.com</link>
+    </links>
+  </profile>
+
+  <experiences>
+    <experience>
+      <company>Your Current Company</company>
+      <title>Senior Software Engineer</title>
+      <startDate>2022-01</startDate>
+      <!-- No endDate = current position -->
+      <description>
+        <summary>Lead engineer on platform team responsible for core infrastructure.</summary>
+        <accomplishment>Led development of microservices architecture serving 1M+ daily requests</accomplishment>
+        <accomplishment>Mentored junior developers and established coding standards</accomplishment>
+      </description>
+      <skills>
+        <skill>PHP</skill>
+        <skill>Laravel</skill>
+        <skill>Docker</skill>
+        <skill>PostgreSQL</skill>
+      </skills>
+    </experience>
+
+    <experience>
+      <company>Previous Company Inc.</company>
+      <title>Software Engineer</title>
+      <startDate>2019-06</startDate>
+      <endDate>2021-12</endDate>
+      <description>
+        <accomplishment>Built and maintained customer-facing web applications</accomplishment>
+        <accomplishment>Improved page load times by 40% through caching and optimization</accomplishment>
+      </description>
+      <skills>
+        <skill>JavaScript</skill>
+        <skill>Vue.js</skill>
+        <skill>MySQL</skill>
+        <skill>Redis</skill>
+      </skills>
+    </experience>
+
+    <experience>
+      <company>Startup Co</company>
+      <title>Junior Developer</title>
+      <startDate>2017-03</startDate>
+      <endDate>2019-05</endDate>
+      <description>
+        <accomplishment>Full-stack development on a SaaS platform</accomplishment>
+        <accomplishment>Collaborated with designers to implement responsive UI components</accomplishment>
+      </description>
+      <skills>
+        <skill>Python</skill>
+        <skill>React</skill>
+        <skill>MySQL</skill>
+      </skills>
+    </experience>
+  </experiences>
+
+  <skills>
+    <!-- Languages -->
+    <skill category="language" proficiency="5">PHP</skill>
+    <skill category="language" proficiency="5">JavaScript</skill>
+    <skill category="language" proficiency="4">Python</skill>
+    <skill category="language" proficiency="4">SQL</skill>
+    <skill category="language" proficiency="3">TypeScript</skill>
+
+    <!-- Frameworks -->
+    <skill category="framework" proficiency="5">Laravel</skill>
+    <skill category="framework" proficiency="4">Vue.js</skill>
+    <skill category="framework" proficiency="4">React</skill>
+    <skill category="framework" proficiency="3">Svelte</skill>
+
+    <!-- Tools -->
+    <skill category="tool" proficiency="5">Git</skill>
+    <skill category="tool" proficiency="4">Docker</skill>
+    <skill category="tool" proficiency="4">Redis</skill>
+    <skill category="tool" proficiency="3">Kubernetes</skill>
+
+    <!-- Platforms -->
+    <skill category="platform" proficiency="4">AWS</skill>
+    <skill category="platform" proficiency="4">Linux</skill>
+    <skill category="platform" proficiency="3">GCP</skill>
+
+    <!-- Databases -->
+    <skill category="tool" proficiency="5">MySQL</skill>
+    <skill category="tool" proficiency="4">PostgreSQL</skill>
+    <skill category="tool" proficiency="3">MongoDB</skill>
+
+    <!-- Methodologies -->
+    <skill category="methodology" proficiency="4">Agile</skill>
+    <skill category="methodology" proficiency="4">TDD</skill>
+    <skill category="methodology" proficiency="3">CI/CD</skill>
+  </skills>
+
+</resume>

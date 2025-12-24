@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+vendor/
+__pycache__/
+*.pyc
+.venv/
+
+# Build outputs
+dist/
+build/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Laravel
+laravel/storage/*.key
+laravel/bootstrap/cache/
+
+# Keep resume.xml private (use resume.example.xml as template)
+resume.xml

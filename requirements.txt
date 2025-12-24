@@ -1,0 +1,4 @@
+asyncpg>=0.29.0
+fastapi>=0.109.0
+reportlab>=4.0.0
+uvicorn[standard]>=0.27.0

@@ -1,0 +1,89 @@
+# Resume Viewer - Docker Compose
+# Includes Python PDF generation service
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: resume
+      POSTGRES_USER: resume_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-resume_pass}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema/postgresql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U resume_user -d resume"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [backend]
+
+  # Python PDF Service (also handles import)
+  pdf-service:
+    build:
+      context: .
+      target: python-service
+    environment:
+      DATABASE_URL: postgresql://resume_user:${DB_PASSWORD:-resume_pass}@postgres:5432/resume
+      RESUME_PATH: /app/resume.xml
+    volumes:
+      - ./resume.xml:/app/resume.xml:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    networks: [backend]
+    restart: unless-stopped
+
+  # PHP API
+  php-api:
+    build:
+      context: .
+      target: php-api
+    environment:
+      DB_DRIVER: pgsql
+      DB_HOST: postgres
+      DB_NAME: resume
+      DB_USER: resume_user
+      DB_PASS: ${DB_PASSWORD:-resume_pass}
+    depends_on: [postgres, pdf-service]
+    networks: [backend]
+    restart: unless-stopped
+
+  # Nginx (serves Vue/React + proxies to PHP)
+  nginx:
+    build:
+      context: .
+      target: nginx
+    ports:
+      - "8080:80"
+    depends_on: [php-api, pdf-service]
+    networks: [backend, frontend]
+    restart: unless-stopped
+
+  # Laravel (optional - for API gateway)
+  laravel:
+    image: bitnami/laravel:10
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_DATABASE: resume
+      DB_USERNAME: resume_user
+      DB_PASSWORD: ${DB_PASSWORD:-resume_pass}
+      PDF_SERVICE_URL: http://pdf-service:8000
+    volumes:
+      - ./laravel:/app
+    depends_on: [postgres, pdf-service]
+    ports:
+      - "8001:8000"
+    networks: [backend, frontend]
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  frontend:
+  backend:
