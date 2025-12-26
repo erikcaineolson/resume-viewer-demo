@@ -81,6 +81,26 @@ services:
     networks: [backend, frontend]
     restart: unless-stopped
 
+  # Rails Admin Dashboard
+  rails-admin:
+    build:
+      context: .
+      target: rails-admin
+    environment:
+      DATABASE_URL: postgresql://resume_user:${DB_PASSWORD:-resume_pass}@postgres:5432/resume
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${RAILS_SECRET_KEY:-development_secret_key_base_at_least_128_chars_long_for_production}
+      PDF_SERVICE_URL: http://pdf-service:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pdf-service:
+        condition: service_started
+    ports:
+      - "3000:3000"
+    networks: [backend, frontend]
+    restart: unless-stopped
+
 volumes:
   postgres_data:
 

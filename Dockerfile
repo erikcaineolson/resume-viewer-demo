@@ -81,3 +81,35 @@ COPY --from=php-api /var/www/html/public /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+
+
+# ============================================
+# Stage 6: Rails Admin Dashboard
+# ============================================
+FROM ruby:3.3-slim AS rails-admin
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    libyaml-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install gems
+COPY rails-admin/Gemfile ./
+RUN bundle config set --local without 'development test' && \
+    bundle install
+
+# Copy application
+COPY rails-admin/ ./
+
+# Precompile assets
+RUN SECRET_KEY_BASE=dummy bundle exec rake assets:precompile 2>/dev/null || true
+
+ENV RAILS_ENV=production
+ENV RAILS_LOG_TO_STDOUT=true
+
+EXPOSE 3000
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

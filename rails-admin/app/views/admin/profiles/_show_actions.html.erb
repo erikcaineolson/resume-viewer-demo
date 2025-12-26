@@ -1,0 +1,19 @@
+<div class="actions">
+  <%= link_to(
+    "Download PDF",
+    download_pdf_admin_profile_path(page.resource),
+    class: "button button--primary"
+  ) %>
+
+  <%= link_to(
+    "Edit",
+    edit_admin_profile_path(page.resource),
+    class: "button"
+  ) %>
+
+  <%= link_to(
+    "Back to List",
+    admin_profiles_path,
+    class: "button"
+  ) %>
+</div>
